@@ -1,6 +1,5 @@
 package com.spring.web.flux.handler;
 
-import com.spring.web.flux.dto.Message;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -20,20 +19,19 @@ public class GreetingHandler {
         Long count = serverRequest.queryParam("count")
                 .map(Long::valueOf)
                 .orElse(5L);
-        Flux<Message> data = Flux.just(
-                        "Spring Boot"
-                        , "WebFlux"
-                        , "Mustache"
-                        , "Netty"
-                        , "Gradle"
+        Flux<String> data = Flux.just(
+                        "Spring Boot\n"
+                        , "WebFlux\n"
+                        , "Mustache\n"
+                        , "Netty\n"
+                        , "Gradle\n"
                 )
                 .skip(start)
-                .take(count)
-                .map(Message::new);
+                .take(count);
         return ServerResponse
                 .ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(data, Message.class);
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(data, String.class);
     }
 
     public Mono<ServerResponse> helloThere(ServerRequest serverRequest) {
